@@ -1,0 +1,574 @@
+<html><head><base href=".">
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f6d5f7, #fbe9d7);
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.grid-container {
+  position: relative;
+}
+
+.grid {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 30px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.grid-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.x-labels {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 20px;
+  display: flex;
+  color: #333;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.y-labels {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 20px;
+  display: flex;
+  flex-direction: column;
+  color: #333;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.cell {
+  position: absolute;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+
+.cell:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.cell::after {
+  content: attr(data-position);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.cell.pop {
+  animation: pop 0.3s ease;
+}
+
+.view-game-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.view-game-button:hover {
+  background: #45a049;
+}
+
+@keyframes pop {
+  0% { background: rgba(255, 255, 255, 0); }
+  50% { background: rgba(255, 255, 255, 0.4); }
+  100% { background: rgba(255, 255, 255, 0); }
+}
+
+.leaderboard {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.leaderboard h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.position-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  margin: 5px 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.position-item:hover {
+  transform: scale(1.02);
+}
+
+.position-label {
+  color: #444;
+}
+
+.click-count {
+  background: #6c5ce7;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.9em;
+}
+
+.settings {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.settings label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.settings input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.settings h4 {
+    margin: 15px 0 10px 0;
+}
+
+.settings input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.margin-display {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(108, 92, 231, 0.1);
+  border-radius: 5px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="grid-container">
+    <div class="x-labels"></div>
+    <div class="y-labels"></div>
+    <div class="grid" id="imageGrid">
+      <img src="https://ideogram.ai/assets/image/lossless/response/9UZR0tulSamps6bmnfImlg" class="grid-image" id="mainImage">
+      <div class="grid-overlay" id="gridOverlay"></div>
+    </div>
+  </div>
+  <div>
+    <div class="settings">
+      <h3>Grid Settings</h3>
+      <label>
+        Top Margin:
+        <input type="number" id="topMargin" value="50" min="0" max="200">
+      </label>
+      <label>
+        Bottom Margin:
+        <input type="number" id="bottomMargin" value="50" min="0" max="200">
+      </label>
+      <label>
+        Left Margin:
+        <input type="number" id="leftMargin" value="50" min="0" max="200">
+      </label>
+      <label>
+        Right Margin:
+        <input type="number" id="rightMargin" value="50" min="0" max="200">
+      </label>
+      <h4>Grid Dimensions</h4>
+      <label>
+        Number of Rows:
+        <input type="number" id="rowCount" value="10" min="2" max="20">
+      </label>
+      <label>
+        Number of Columns:
+        <input type="number" id="colCount" value="10" min="2" max="20">
+      </label>
+      <button onclick="updateGridLayout()">Apply Settings</button>
+      <button onclick="generateSimplifiedHTML()">Save Game State</button>
+      <a id="viewGameLink" href="#" target="_blank" class="view-game-button">View Game</a>
+    </div>
+    <div class="leaderboard">
+      <h2>Click Counter</h2>
+      <div id="clickStats"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const positionClicks = {};
+
+// Initialize default click counts for all grid positions
+function initializeDefaultClicks() {
+  const rows = parseInt(document.getElementById('rowCount').value) || 10;
+  const cols = parseInt(document.getElementById('colCount').value) || 10;
+  
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const gridPosition = `${String.fromCharCode(65 + row)}${col + 1}`;
+      positionClicks[gridPosition] = 0;
+    }
+  }
+  updateLeaderboard();
+}
+
+function calculateGridPositions(containerWidth, containerHeight, gridRows, gridCols, margins) {
+    const { top, bottom, left, right } = margins;
+
+    const availableWidth = containerWidth - left - right;
+    const availableHeight = containerHeight - top - bottom;
+
+    const horizontalGap = 2; // 2px gap between cells
+    const verticalGap = 2;
+    
+    const cellWidth = (availableWidth - (gridCols - 1) * horizontalGap) / gridCols;
+    const cellHeight = (availableHeight - (gridRows - 1) * verticalGap) / gridRows;
+
+    const roundedCellWidth = Math.round(cellWidth * 1000) / 1000;
+    const roundedCellHeight = Math.round(cellHeight * 1000) / 1000;
+
+    const positions = [];
+    for (let row = 0; row < gridRows; row++) {
+        for (let col = 0; col < gridCols; col++) {
+            const x = left + col * (roundedCellWidth + horizontalGap);
+            const y = top + row * (roundedCellHeight + verticalGap);
+            positions.push({
+                row,
+                col,
+                x,
+                y,
+                width: roundedCellWidth,
+                height: roundedCellHeight
+            });
+        }
+    }
+
+    return positions;
+}
+
+function createCell(position, x, y) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.style.left = `${position.x}px`;
+    cell.style.top = `${position.y}px`;
+    cell.style.width = `${position.width}px`;
+    cell.style.height = `${position.height}px`;
+    
+    const cols = parseInt(document.getElementById('colCount').value);
+    const gridPosition = `${String.fromCharCode(65 + y)}${x + 1}`;
+    cell.setAttribute('data-position', gridPosition);
+    
+    positionClicks[gridPosition] = positionClicks[gridPosition] || 0;
+    
+    cell.addEventListener('click', () => {
+        positionClicks[gridPosition]++;
+        cell.classList.add('pop');
+        setTimeout(() => cell.classList.remove('pop'), 300);
+        updateLeaderboard();
+    });
+    
+    return cell;
+}
+
+function updateLeaderboard() {
+    const statsContainer = document.getElementById('clickStats');
+    
+    const allPositions = Object.entries(positionClicks)
+        .map(([position, clicks]) => ({
+            position,
+            clicks
+        }))
+        .sort((a, b) => b.clicks - a.clicks);
+
+    statsContainer.innerHTML = allPositions.map(({position, clicks}) => `
+        <div class="position-item">
+            <span class="position-label">Position ${position}</span>
+            <span class="click-count">${clicks}</span>
+        </div>
+    `).join('');
+}
+
+function updateGridLayout() {
+    const topMargin = parseInt(document.getElementById('topMargin').value);
+    const bottomMargin = parseInt(document.getElementById('bottomMargin').value);
+    const leftMargin = parseInt(document.getElementById('leftMargin').value);
+    const rightMargin = parseInt(document.getElementById('rightMargin').value);
+    const rows = parseInt(document.getElementById('rowCount').value);
+    const cols = parseInt(document.getElementById('colCount').value);
+    
+    const gridOverlay = document.getElementById('gridOverlay');
+    const mainImage = document.getElementById('mainImage');
+    const grid = document.getElementById('imageGrid');
+    
+    // Clear existing grid and labels
+    while (gridOverlay.firstChild) {
+        gridOverlay.removeChild(gridOverlay.firstChild);
+    }
+    
+    const xLabels = document.querySelector('.x-labels');
+    const yLabels = document.querySelector('.y-labels');
+    xLabels.innerHTML = '';
+    yLabels.innerHTML = '';
+    
+    // Calculate label positions based on cell positions
+    const labelStyle = `
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+    `;
+
+    // Create X labels (numbers) centered with cells
+    const xLabelContainer = document.createElement('div');
+    xLabelContainer.style.display = 'flex';
+    xLabelContainer.style.position = 'relative';
+    xLabelContainer.style.width = `${grid.offsetWidth - leftMargin - rightMargin}px`;
+    xLabelContainer.style.height = '20px'; // Height for label area
+    
+    const positions = calculateGridPositions(
+        grid.offsetWidth,
+        grid.offsetHeight,
+        rows,
+        cols,
+        { top: topMargin, bottom: bottomMargin, left: leftMargin, right: rightMargin }
+    );
+    
+    for (let i = 0; i < cols; i++) {
+        const cellPosition = positions.find(p => p.row === 0 && p.col === i);
+        const xLabel = document.createElement('div');
+        xLabel.textContent = i + 1;
+        xLabel.style.cssText = labelStyle;
+        xLabel.style.position = 'absolute';
+        xLabel.style.width = `${cellPosition.width}px`;
+        xLabel.style.left = `${cellPosition.x - leftMargin}px`;
+        xLabelContainer.appendChild(xLabel);
+    }
+    
+    xLabels.appendChild(xLabelContainer);
+
+    // Create Y labels (letters) centered with cells
+    const yLabelContainer = document.createElement('div');
+    yLabelContainer.style.position = 'relative';
+    yLabelContainer.style.height = `${grid.offsetHeight - topMargin - bottomMargin}px`;
+    yLabelContainer.style.width = '20px'; // Width for label area
+    
+    for (let i = 0; i < rows; i++) {
+        const cellPosition = positions.find(p => p.row === i && p.col === 0);
+        const yLabel = document.createElement('div');
+        yLabel.textContent = String.fromCharCode(65 + i);
+        yLabel.style.cssText = labelStyle;
+        yLabel.style.position = 'absolute';
+        yLabel.style.height = `${cellPosition.height}px`;
+        yLabel.style.top = `${cellPosition.y - topMargin}px`;
+        yLabelContainer.appendChild(yLabel);
+    }
+    
+    yLabels.appendChild(yLabelContainer);
+    
+    // Update label container positioning
+    xLabels.style.cssText = `
+        position: absolute;
+        left: ${leftMargin}px;
+        right: ${rightMargin}px;
+        top: ${topMargin - 25}px; /* Position above the grid area */
+        height: 20px;
+    `;
+    
+    yLabels.style.cssText = `
+        position: absolute;
+        top: ${topMargin}px;
+        bottom: ${bottomMargin}px;
+        left: ${leftMargin - 25}px; /* Position to the left of grid area */
+        width: 20px;
+    `;
+
+    positions.forEach((position, index) => {
+        const row = Math.floor(index / cols);
+        const col = index % cols;
+        const cell = createCell(position, col, row);
+        gridOverlay.appendChild(cell);
+    });
+    
+    mainImage.style.clip = `rect(${topMargin}px, ${grid.offsetWidth - rightMargin}px, ${grid.offsetHeight - bottomMargin}px, ${leftMargin}px)`;
+
+    // Initialize default clicks after grid is created
+    initializeDefaultClicks();
+
+    // Call generateSimplifiedHTML immediately after grid updates
+    generateSimplifiedHTML();
+}
+
+async function generateSimplifiedHTML() {
+    const gridOverlay = document.getElementById('gridOverlay');
+    const mainImage = document.getElementById('mainImage');
+    const leaderboard = document.querySelector('.leaderboard');
+    
+    const gameState = {
+        html: `
+<html>
+<head>
+<style>
+${document.querySelector('style').textContent}
+.grid-container {
+    margin-top: 20px;
+}
+.x-labels {
+    left: 0;
+    right: 0;
+    top: 0;
+    padding-top: 5px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="grid-container">
+        <div class="x-labels">${document.querySelector('.x-labels').innerHTML}</div>
+        <div class="y-labels">${document.querySelector('.y-labels').innerHTML}</div>
+        <div class="grid" id="imageGrid">
+            <img src="${mainImage.src}" class="grid-image" id="mainImage" style="${mainImage.style.cssText}"/>
+            <div class="grid-overlay" id="gridOverlay">
+                ${gridOverlay.innerHTML}
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="leaderboard">
+            <h2>Click Counter</h2>
+            <div id="clickStats">
+                ${document.getElementById('clickStats').innerHTML}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const positionClicks = ${JSON.stringify(positionClicks)};
+
+function initializeDefaultClicks() {
+    document.querySelectorAll('.cell').forEach(cell => {
+        const gridPosition = cell.getAttribute('data-position');
+        if (!(gridPosition in positionClicks)) {
+            positionClicks[gridPosition] = 0;
+        }
+    });
+    updateLeaderboard();
+}
+
+function updateLeaderboard() {
+    const statsContainer = document.getElementById('clickStats');
+    const allPositions = Object.entries(positionClicks)
+        .map(([position, clicks]) => ({
+            position,
+            clicks
+        }))
+        .sort((a, b) => b.clicks - a.clicks);
+
+    statsContainer.innerHTML = allPositions.map(({position, clicks}) => \`
+        <div class="position-item">
+            <span class="position-label">Position \${position}</span>
+            <span class="click-count">\${clicks}</span>
+        </div>
+    \`).join('');
+}
+
+document.querySelectorAll('.cell').forEach(cell => {
+    const gridPosition = cell.getAttribute('data-position');
+    cell.addEventListener('click', () => {
+        positionClicks[gridPosition]++;
+        cell.classList.add('pop');
+        setTimeout(() => cell.classList.remove('pop'), 300);
+        updateLeaderboard();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeDefaultClicks();
+});
+
+updateLeaderboard();
+<\/script>
+</body>
+</html>`
+    };
+
+    try {
+        // Send the game state to server
+        const response = await fetch('/api/save-game', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(gameState)
+        });
+        
+        const data = await response.json();
+        
+        // Update the View Game link with the returned URL
+        const viewGameLink = document.getElementById('viewGameLink');
+        viewGameLink.href = `/game/${data.gameId}`;
+        
+    } catch (error) {
+        console.error('Error saving game:', error);
+        alert('Failed to save game state');
+    }
+}
+</script>
+
+</body></html>

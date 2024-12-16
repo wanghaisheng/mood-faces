@@ -4,7 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoodFaces - Home</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Express yourself through MoodFaces - From classic emojis to viral memes and cartoon reactions. Join millions sharing their daily moods and feelings!">
+    <meta name="keywords" content="mood tracker, emoji, memes, mood faces, emotional expression, mood themes">
+    <meta name="author" content="MoodFaces">
+    <meta http-equiv="Content-Language" content="en">
+
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://moodfaces.heytcm.com/home" />
+
+    <!-- Open Graph for Social Media -->
+    <meta property="og:title" content="MoodFaces - Express Your Emotions">
+    <meta property="og:description" content="Express yourself through our diverse collection of mood faces. From classic emojis to trending memes - share your feelings with our growing community!">
+    <meta property="og:image" content="https://moodfaces.heytcm.com/social-preview.jpg">
+    <meta property="og:url" content="https://moodfaces.heytcm.com/home">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MoodFaces - Express Your Emotions">
+    <meta name="twitter:description" content="Express yourself through our diverse collection of mood faces. Join millions sharing their daily moods and feelings!">
+    <meta name="twitter:image" content="https://moodfaces.heytcm.com/social-preview.jpg">
+    <meta name="twitter:creator" content="@moodfaces">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://moodfaces.heytcm.com/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://moodfaces.heytcm.com/apple-touch-icon.png">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00b8ff">
+    <link rel="manifest" href="https://moodfaces.heytcm.com/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MoodFaces">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXX');
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.getElementsByTagName('script')[0];y=l.createElement('script');y.async=1;
+            y.src='https://www.clarity.ms/tag/XXXXXX';
+            t.parentNode.insertBefore(y,t);
+        })(window, document, "clarity", "script");
+    </script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('https://moodfaces.heytcm.com/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+
+    <title>MoodFaces - Express Your Emotions Through Faces</title>
+
+    <!-- Keep existing styles -->
     <style>
         * {
             margin: 0;

@@ -1,0 +1,1147 @@
+
+<html><head><base href="https://moodfaces.heytcm.com/home"><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodFaces - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+        }
+
+        .mobile-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background-color: #fff;
+            position: relative;
+            padding-bottom: 0;
+        }
+
+        /* Navigation Styles */
+        .menu-toggle {
+            display: block;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger::before {
+            transform: translateY(-10px);
+        }
+
+        .hamburger::after {
+            transform: translateY(10px);
+        }
+
+        .menu-toggle.active .hamburger {
+            background-color: transparent;
+        }
+
+        .menu-toggle.active .hamburger::before {
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.active .hamburger::after {
+            transform: rotate(-45deg);
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100vh;
+            background-color: #333;
+            padding: 60px 0 0 0;
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .nav-container.active {
+            left: 0;
+        }
+
+        .nav-container a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 15px 25px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-container a:hover {
+            background-color: #444;
+            color: #00ff9d;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: white;
+            color: #00b8ff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Featured Section */
+        .featured-section {
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 15px;
+        }
+
+        .featured-card, .theme-card {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .featured-card:hover, .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .featured-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            text-align: center;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-content h3 {
+            color: #00b8ff;
+            margin-bottom: 15px;
+        }
+
+        .emoji-preview {
+            font-size: 1.5em;
+            margin-top: 10px;
+            letter-spacing: 5px;
+        }
+
+        .grid-info {
+            margin-top: 15px;
+            padding: 8px;
+            background-color: rgba(0, 184, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(0, 184, 255, 0.1));
+            padding: 40px 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00b8ff;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .size-details {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            padding: 40px 20px;
+        }
+
+        .activity-feed {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .activity-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .activity-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ff9d, #00b8ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .activity-details {
+            flex-grow: 1;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 184, 255, 0.1), rgba(0, 255, 157, 0.1));
+        }
+
+        .submission-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .submission-info {
+            margin-bottom: 30px;
+        }
+
+        .submission-guidelines {
+            margin: 20px 0;
+            padding-left: 20px;
+            color: #666;
+        }
+
+        .submission-guidelines li {
+            margin: 10px 0;
+        }
+
+        .submission-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #00b8ff, #00ff9d);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Popular Themes Section */
+        .popular-section {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+        }
+
+        .theme-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .theme-preview {
+            width: 100px;
+            height: 100px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .theme-info {
+            flex-grow: 1;
+        }
+
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .theme-title {
+            font-size: 1.2em;
+            color: #333;
+            margin: 0;
+        }
+
+        .theme-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .theme-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .theme-description {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .theme-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .theme-tag {
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .popular-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .view-all-button {
+            display: block;
+            text-align: center;
+            margin: 30px auto 0;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            width: fit-content;
+            transition: transform 0.3s ease;
+        }
+
+        .view-all-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* New Styles */
+        .trend-tag {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            margin-left: 8px;
+        }
+
+        .mood-category {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .emotion-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        footer a:hover {
+            color: #00ff9d !important;
+        }
+
+        /* Menu Footer Styles */
+        .menu-footer {
+            margin-top: 20px;
+        }
+
+        .menu-section {
+            margin-bottom: 20px;
+        }
+
+        .menu-section a {
+            padding: 8px 25px;
+            font-size: 0.9em;
+        }
+
+        .menu-section p {
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="menu-toggle">
+        <div class="hamburger"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <a href="https://moodfaces.heytcm.com/home">Home</a>
+        <a href="https://moodfaces.heytcm.com/play">Themes</a>
+        <a href="https://moodfaces.heytcm.com/leaderboard">Leaderboard</a>
+        
+        <!-- Add divider -->
+        <div style="height: 1px; background: #444; margin: 20px 0;"></div>
+        
+        <!-- Add footer content -->
+        <div class="menu-footer">
+            <div class="menu-section">
+                <h3 style="color: #00ff9d; margin: 15px 25px;">About MoodFaces</h3>
+                <p style="color: #ccc; padding: 0 25px; margin-bottom: 15px; font-size: 0.9em;">Express yourself through our diverse collection of mood faces. From classic emojis to trending memes.</p>
+            </div>
+
+            <div class="menu-section">
+                <h3 style="color: #00ff9d; margin: 15px 25px;">Resources</h3>
+                <a href="https://moodfaces.heytcm.com/faq">FAQ</a>
+                <a href="https://moodfaces.heytcm.com/guidelines">Community Guidelines</a>
+                <a href="https://moodfaces.heytcm.com/privacy">Privacy Policy</a>
+                <a href="https://moodfaces.heytcm.com/terms">Terms of Service</a>
+            </div>
+
+            <div class="menu-section">
+                <h3 style="color: #00ff9d; margin: 15px 25px;">Contact</h3>
+                <p style="color: #ccc; padding: 0 25px; margin-bottom: 5px;">
+                    <svg style="width: 16px; height: 16px; margin-right: 10px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    support@moodfaces.heytcm.com
+                </p>
+            </div>
+
+            <!-- Social Links -->
+            <div style="padding: 20px 25px; border-top: 1px solid #444; margin-top: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <a href="https://twitter.com/moodfaces" style="color: #ccc; text-decoration: none; margin-right: 20px;">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com/moodfaces" style="color: #ccc; text-decoration: none; margin-right: 20px;">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://discord.gg/moodfaces" style="color: #ccc; text-decoration: none;">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </a>
+                </div>
+                <p style="color: #888; font-size: 0.8em; margin: 0;">© 2024 MoodFaces. All rights reserved.</p>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>MoodFaces</h1>
+            <p>From classic emojis to viral memes and cartoon reactions - express yourself through the universal language of faces!</p>
+            <p style="font-size: 0.9em; margin: 10px 0;">Join millions sharing their daily moods, feelings, and reactions in our growing community</p>
+            <a href="https://moodfaces.heytcm.com/play" class="cta-button">Express Yourself</a>
+        </section>
+
+        <!-- Featured Section -->
+        <section class="featured-section">
+            <h2 class="section-title">Trending Collections</h2>
+            <div class="featured-grid">
+                <div class="featured-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/1';">
+                    <div class="card-content">
+                        <h3>2024 Tech Moods <span class="trend-tag">Trending</span></h3>
+                        <p>Express anxiety, hope, and humor in response to AI and tech changes</p>
+                        <div class="emoji-preview">😅 🤖 😨 🤔 😤</div>
+                        <div class="mood-category">Modern digital age reactions</div>
+                        <div class="emotion-stats">
+                            <span>12k+ plays today</span>
+                            <span>95% relatable</span>
+                        </div>
+                        <div class="grid-info">100 Moods (10×10)</div>
+                    </div>
+                </div>
+                
+                <div class="featured-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/2';">
+                    <div class="card-content">
+                        <h3>Top Reddit Reactions <span class="trend-tag">Hot</span></h3>
+                        <p>Most used reactions from Reddit communities</p>
+                        <div class="emoji-preview">😂 😭 🥺 😔 😆</div>
+                        <div class="mood-category">Community favorites</div>
+                        <div class="emotion-stats">
+                            <span>8.5k+ plays</span>
+                            <span>92% authentic</span>
+                        </div>
+                        <div class="grid-info">81 Moods (9×9)</div>
+                    </div>
+                </div>
+
+                <div class="featured-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/3';">
+                    <div class="card-content">
+                        <h3>Self-Care Vibes <span class="trend-tag">New</span></h3>
+                        <p>Personal growth and wellness journey expressions</p>
+                        <div class="emoji-preview">🥰 💪 🧘‍♀️ 😌 ✨</div>
+                        <div class="mood-category">Glow-up & wellness</div>
+                        <div class="emotion-stats">
+                            <span>6k+ plays</span>
+                            <span>89% inspiring</span>
+                        </div>
+                        <div class="grid-info">36 Moods (6×6)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Your Mood Theme Section -->
+        <section class="submit-section">
+            <h2 class="section-title">Submit Your Mood Theme</h2>
+            <div class="submission-container">
+                <div class="submission-info">
+                    <p>Share your unique mood face collection with our growing community! Based on recent trends, we welcome diverse expressions from classic emojis to modern meme faces.</p>
+                    <ul class="submission-guidelines">
+                        <li>Include a mix of emotions: joy, sadness, anxiety, humor, and everything in between</li>
+                        <li>Consider trending themes: tech anxiety, self-improvement, social commentary</li>
+                        <li>Make it relatable: faces that reflect daily experiences and emotions</li>
+                        <li>Keep it diverse: 36-100 unique expressions (6x6, 9x9, or 10x10 grids)</li>
+                        <li>Ensure faces are clear, appropriate, and emotionally expressive</li>
+                    </ul>
+                </div>
+                <form id="themeSubmissionForm" class="submission-form">
+                    <div class="form-group">
+                        <label for="themeName">Theme Name:</label>
+                        <input type="text" id="themeName" required placeholder="e.g., Pixel Moods, Doodle Faces">
+                    </div>
+                    <div class="form-group">
+                        <label for="themeDescription">Description:</label>
+                        <textarea id="themeDescription" required placeholder="Describe your mood face collection..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="gridSize">Grid Size:</label>
+                        <select id="gridSize" required>
+                            <option value="6">6x6 (36 faces)</option>
+                            <option value="9">9x9 (81 faces)</option>
+                            <option value="10">10x10 (100 faces)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="themeFiles">Upload Face Images:</label>
+                        <input type="file" id="themeFiles" multiple accept="image/*" required>
+                        <div class="file-preview" id="filePreview"></div>
+                    </div>
+                    <button type="submit" class="submit-button">Submit Theme</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <h2 class="section-title">Community Stats</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Moods Shared</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Grid Sizes</div>
+                    <div class="size-details">10×10, 9×9, 6×6</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">User Satisfaction</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="activity-section">
+            <h2 class="section-title">Recent Activity</h2>
+            <div class="activity-feed" id="activityFeed">
+                <!-- Activity items will now be populated with research-based content -->
+            </div>
+        </section>
+
+        <!-- Popular Themes Section -->
+        <section class="popular-section">
+            <h2 class="section-title">Popular Themes</h2>
+            <div class="popular-grid">
+                <div class="theme-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/4';" style="cursor: pointer;">
+                    <div class="theme-preview">🎭</div>
+                    <div class="theme-info">
+                        <div class="theme-header">
+                            <h3 class="theme-title">Theater Faces</h3>
+                            <div class="theme-stats">
+                                <span class="theme-stat">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                        <line x1="4" y1="22" x2="4" y2="15"></line>
+                                    </svg>
+                                    10k plays
+                                </span>
+                                <span class="theme-stat">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    2.5k likes
+                                </span>
+                            </div>
+                        </div>
+                        <p class="theme-description">Dramatic expressions inspired by theater masks and performances. Perfect for artistic souls!</p>
+                        <div class="theme-tags">
+                            <span class="theme-tag">10×10</span>
+                            <span class="theme-tag">Artistic</span>
+                            <span class="theme-tag">Drama</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theme-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/5';" style="cursor: pointer;">
+                    <div class="theme-preview">🌈</div>
+                    <div class="theme-info">
+                        <div class="theme-header">
+                            <h3 class="theme-title">Rainbow Vibes</h3>
+                            <div class="theme-stats">
+                                <span class="theme-stat">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                        <line x1="4" y1="22" x2="4" y2="15"></line>
+                                    </svg>
+                                    8.5k plays
+                                </span>
+                                <span class="theme-stat">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    2k likes
+                                </span>
+                            </div>
+                        </div>
+                        <p class="theme-description">Colorful expressions that capture every mood in vibrant hues. A community favorite!</p>
+                        <div class="theme-tags">
+                            <span class="theme-tag">9×9</span>
+                            <span class="theme-tag">Colorful</span>
+                            <span class="theme-tag">Trendy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theme-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/6';" style="cursor: pointer;">
+                    <div class="theme-preview">🎨</div>
+                    <div class="theme-info">
+                        <div class="theme-header">
+                            <h3 class="theme-title">Pixel Emotions</h3>
+                            <div class="theme-stats">
+                                <span class="theme-stat">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                        <line x1="4" y1="22" x2="4" y2="15"></line>
+                                    </svg>
+                                    7k plays
+                                </span>
+                                <span class="theme-stat">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    1.8k likes
+                                </span>
+                            </div>
+                        </div>
+                        <p class="theme-description">Retro pixel art meets modern emotions. Express yourself in 8-bit style!</p>
+                        <div class="theme-tags">
+                            <span class="theme-tag">6×6</span>
+                            <span class="theme-tag">Retro</span>
+                            <span class="theme-tag">Gaming</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="https://moodfaces.heytcm.com/play" class="view-all-button">View All Themes</a>
+        </section>
+
+        <!-- Tips & Tricks Section -->
+        <section class="tips-section" style="padding: 40px 20px; background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(255, 107, 107, 0.1));">
+            <h2 class="section-title">Tips & Tricks for Users</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div class="featured-card">
+                        <div class="card-content">
+                            <h3>Choosing Your Theme</h3>
+                            <p>🎯 Match theme to your personality:</p>
+                            <ul style="list-style: none; padding-left: 10px; margin-top: 10px;">
+                                <li>• Emoji themes: Classic & universally understood</li>
+                                <li>• Meme faces: Modern & relatable reactions</li>
+                                <li>• Cartoon faces: Playful & expressive</li>
+                                <li>• Artistic themes: Unique & creative moods</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="featured-card">
+                        <div class="card-content">
+                            <h3>Selecting Your Mood</h3>
+                            <p>🎭 Tips for accurate mood tracking:</p>
+                            <ul style="list-style: none; padding-left: 10px; margin-top: 10px;">
+                                <li>• Take a moment to reflect</li>
+                                <li>• Consider your primary emotion</li>
+                                <li>• Note any secondary feelings</li>
+                                <li>• Pick the most resonant expression</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="featured-card">
+                        <div class="card-content">
+                            <h3>Track Your Journey</h3>
+                            <p>📊 Make the most of mood history:</p>
+                            <ul style="list-style: none; padding-left: 10px; margin-top: 10px;">
+                                <li>• Set regular check-in times</li>
+                                <li>• Notice patterns & triggers</li>
+                                <li>• Review weekly summaries</li>
+                                <li>• Share insights with trusted friends</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add a new card for Mood Tracking Benefits -->
+                <div class="featured-card" style="margin-top: 20px;">
+                    <div class="card-content">
+                        <h3>Benefits of Regular Mood Tracking</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                            <div>
+                                <h4 style="color: #00b8ff;">Self-Awareness 🧠</h4>
+                                <p>Understand your emotional patterns and triggers better</p>
+                            </div>
+                            <div>
+                                <h4 style="color: #00b8ff;">Mental Health 💪</h4>
+                                <p>Track progress and identify areas for improvement</p>
+                            </div>
+                            <div>
+                                <h4 style="color: #00b8ff;">Communication 🗣️</h4>
+                                <p>Express feelings more effectively with others</p>
+                            </div>
+                            <div>
+                                <h4 style="color: #00b8ff;">Personal Growth 🌱</h4>
+                                <p>Document your emotional journey and progress</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Quick Start Guide -->
+                <div class="featured-card" style="margin-top: 20px;">
+                    <div class="card-content">
+                        <h3>Quick Start Guide</h3>
+                        <ol style="padding-left: 25px; margin-top: 15px;">
+                            <li style="margin-bottom: 10px;">Choose a theme that resonates with your style (Classic Emoji, Meme, Cartoon, etc.)</li>
+                            <li style="margin-bottom: 10px;">Set a daily reminder for mood check-ins</li>
+                            <li style="margin-bottom: 10px;">Select the face that best matches your current emotional state</li>
+                            <li style="margin-bottom: 10px;">Add optional notes to provide context for your mood</li>
+                            <li>Review your mood patterns in the weekly summary</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mood Tracking Features Section -->
+        <section class="mood-tracking-section" style="padding: 40px 20px; background: #fff;">
+            <h2 class="section-title">Mood Tracking Features</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div class="featured-card">
+                        <div class="card-content">
+                            <h3>Daily Check-ins</h3>
+                            <p>📅 Set custom reminders</p>
+                            <p>📝 Add context notes</p>
+                            <p>🔄 Multiple entries per day</p>
+                            <p>📊 View daily summaries</p>
+                        </div>
+                    </div>
+                    <div class="featured-card">
+                        <div class="card-content">
+                            <h3>Mood Analysis</h3>
+                            <p>📈 Weekly mood trends</p>
+                            <p>🎯 Pattern recognition</p>
+                            <p>💡 Personalized insights</p>
+                            <p>🔍 Detailed history view</p>
+                        </div>
+                    </div>
+                    <div class="featured-card">
+                        <div class="card-content">
+                            <h3>Share & Connect</h3>
+                            <p>👥 Private sharing options</p>
+                            <p>🤝 Support network</p>
+                            <p>📤 Export your data</p>
+                            <p>🔒 Privacy controls</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events Section -->
+        <section class="events-section" style="padding: 40px 20px; background: #fff;">
+            <h2 class="section-title">Upcoming Events</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="theme-card">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #FF6B6B, #4ECDC4);">🎉</div>
+                    <div class="theme-info">
+                        <div class="theme-header">
+                            <h3 class="theme-title">Monthly Theme Contest</h3>
+                        </div>
+                        <p class="theme-description">Submit your best mood theme and win exclusive features! Theme: "Future Emotions"</p>
+                        <div class="theme-tags">
+                            <span class="theme-tag">Starts May 1st</span>
+                            <span class="theme-tag">Prizes</span>
+                            <span class="theme-tag">Featured Spot</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-card">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #4ECDC4, #FF6B6B);">🏆</div>
+                    <div class="theme-info">
+                        <div class="theme-header">
+                            <h3 class="theme-title">Community Challenge</h3>
+                        </div>
+                        <p class="theme-description">Create a collaborative mood board with 100 participants! Let's make history together.</p>
+                        <div class="theme-tags">
+                            <span class="theme-tag">Coming Soon</span>
+                            <span class="theme-tag">Community Event</span>
+                            <span class="theme-tag">Collaborative</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section" style="padding: 40px 20px; background: linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(0, 184, 255, 0.1));">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="featured-card" style="margin-bottom: 20px;">
+                    <div class="card-content">
+                        <h3>How do I start creating my theme?</h3>
+                        <p>Browse existing themes for inspiration, prepare your mood faces, and use our submission form. We recommend starting with a 6×6 grid for your first theme.</p>
+                    </div>
+                </div>
+                <div class="featured-card" style="margin-bottom: 20px;">
+                    <div class="card-content">
+                        <h3>What types of faces can I include?</h3>
+                        <p>We welcome all types - emojis, memes, cartoons, original artwork, and more! Just ensure they're appropriate and express clear emotions.</p>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <div class="card-content">
+                        <h3>How long does approval take?</h3>
+                        <p>Our team reviews submissions within 24-48 hours. We'll notify you via email once your theme is approved and live!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter-section" style="padding: 40px 20px; background: #fff; text-align: center;">
+            <h2 class="section-title">Stay Updated</h2>
+            <div style="max-width: 500px; margin: 0 auto;">
+                <p style="margin-bottom: 20px; color: #666;">Get the latest mood themes, contests, and community updates delivered to your inbox!</p>
+                <form class="submission-form" style="max-width: 400px; margin: 0 auto;">
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email" required style="width: 100%;">
+                    </div>
+                    <button type="submit" class="submit-button">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Menu Toggle Functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navContainer = document.querySelector('.nav-container');
+        const overlay = document.querySelector('.overlay');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navContainer.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navContainer.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Populate Recent Activity Feed
+        const activityFeed = document.getElementById('activityFeed');
+        
+        // Sample activity data - in a real app, this would come from your backend
+        const recentActivities = [
+            { user: 'Alex', action: 'expressed tech anxiety with the 🤖 mood', time: '2 minutes ago' },
+            { user: 'Sarah', action: 'shared their self-care journey with 🧘‍♀️', time: '5 minutes ago' },
+            { user: 'Mike', action: 'used Reddit\'s favorite reactions 😂', time: '10 minutes ago' },
+            { user: 'Emma', action: 'created a personal growth mood board ✨', time: '15 minutes ago' }
+        ];
+
+        function populateActivityFeed() {
+            activityFeed.innerHTML = recentActivities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-avatar">${activity.user[0]}</div>
+                    <div class="activity-details">
+                        <div><strong>${activity.user}</strong> ${activity.action}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize components
+        document.addEventListener('DOMContentLoaded', () => {
+            populateActivityFeed();
+
+            const themeSubmissionForm = document.getElementById('themeSubmissionForm');
+            const filePreview = document.getElementById('filePreview');
+            const themeFiles = document.getElementById('themeFiles');
+
+            // Handle file preview
+            themeFiles.addEventListener('change', (e) => {
+                filePreview.innerHTML = '';
+                const files = Array.from(e.target.files);
+                
+                files.forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'preview-image';
+                            filePreview.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+
+            // Handle form submission
+            themeSubmissionForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData();
+                formData.append('name', document.getElementById('themeName').value);
+                formData.append('description', document.getElementById('themeDescription').value);
+                formData.append('gridSize', document.getElementById('gridSize').value);
+                
+                const files = document.getElementById('themeFiles').files;
+                for (let i = 0; i < files.length; i++) {
+                    try {
+                        const url = await websim.upload(files[i]);
+                        formData.append('imageUrls[]', url);
+                    } catch (error) {
+                        console.error('Error uploading file:', error);
+                    }
+                }
+
+                try {
+                    // Create a submission record
+                    const submission = await room.collection('theme_submissions').create({
+                        name: formData.get('name'),
+                        description: formData.get('description'),
+                        gridSize: parseInt(formData.get('gridSize')),
+                        imageUrls: formData.getAll('imageUrls[]'),
+                        status: 'pending', // pending, approved, rejected
+                        created_at: Date.now()
+                    });
+
+                    alert('Your theme has been submitted for review!');
+                    themeSubmissionForm.reset();
+                    filePreview.innerHTML = '';
+                } catch (error) {
+                    console.error('Error submitting theme:', error);
+                    alert('Failed to submit theme. Please try again.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

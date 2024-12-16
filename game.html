@@ -1,0 +1,531 @@
+
+<html><head><base href="https://moodfaces.heytcm.com/game">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>MoodFaces - Browse All Themes</title>
+    <meta name="description" content="Explore our complete collection of mood expression themes - from classic emojis to trending memes and artistic interpretations.">
+    <meta name="keywords" content="mood tracker, emoji, memes, mood faces, emotional expression, mood themes">
+    <meta name="author" content="MoodFaces">
+    <meta http-equiv="Content-Language" content="en">
+
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://moodfaces.heytcm.com/game" />
+
+    <!-- Open Graph for Social Media -->
+    <meta property="og:title" content="MoodFaces - Browse All Themes">
+    <meta property="og:description" content="Discover and play with our diverse collection of mood expression themes. Find the perfect way to express your emotions!">
+    <meta property="og:image" content="https://moodfaces.heytcm.com/social-preview.jpg">
+    <meta property="og:url" content="https://moodfaces.heytcm.com/game">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MoodFaces - Browse All Themes">
+    <meta name="twitter:description" content="Explore our complete collection of mood expression themes - from classic emojis to trending memes and artistic interpretations.">
+    <meta name="twitter:image" content="https://moodfaces.heytcm.com/social-preview.jpg">
+    <meta name="twitter:creator" content="@moodfaces">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://moodfaces.heytcm.com/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://moodfaces.heytcm.com/apple-touch-icon.png">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00b8ff">
+    <link rel="manifest" href="https://moodfaces.heytcm.com/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MoodFaces">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXX');
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.getElementsByTagName('script')[0];y=l.createElement('script');y.async=1;
+            y.src='https://www.clarity.ms/tag/XXXXXX';
+            t.parentNode.insertBefore(y,t);
+        })(window, document, "clarity", "script");
+    </script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('https://moodfaces.heytcm.com/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+        }
+
+        .mobile-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background-color: #fff;
+            position: relative;
+            padding-bottom: 0;
+        }
+
+        /* Menu Toggle */
+        .menu-toggle {
+            display: block;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger::before {
+            transform: translateY(-10px);
+        }
+
+        .hamburger::after {
+            transform: translateY(10px);
+        }
+
+        .menu-toggle.active .hamburger {
+            background-color: transparent;
+        }
+
+        .menu-toggle.active .hamburger::before {
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.active .hamburger::after {
+            transform: rotate(-45deg);
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100vh;
+            background-color: #333;
+            padding: 60px 0 0 0;
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .nav-container.active {
+            left: 0;
+        }
+
+        .nav-container a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 15px 25px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-container a:hover {
+            background-color: #444;
+            color: #00ff9d;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Games Header */
+        .games-header {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-button {
+            padding: 8px 20px;
+            border: 2px solid #00b8ff;
+            border-radius: 20px;
+            background: none;
+            color: #00b8ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button.active {
+            background: #00b8ff;
+            color: white;
+        }
+
+        .sort-select {
+            padding: 8px 20px;
+            border: 2px solid #00b8ff;
+            border-radius: 20px;
+            background: white;
+            color: #00b8ff;
+            cursor: pointer;
+        }
+
+        /* Games Grid */
+        .games-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .game-preview {
+            height: 200px;
+            background: linear-gradient(45deg, rgba(0,184,255,0.1), rgba(0,255,157,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            font-size: 1.5em;
+        }
+
+        .game-details {
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9em;
+            margin: 15px 0;
+        }
+
+        .game-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Keep existing styles */
+        .mobile-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background-color: #fff;
+            position: relative;
+            padding-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Toggle -->
+    <div class="menu-toggle">
+        <div class="hamburger"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <a href="https://moodfaces.heytcm.com/home">Home</a>
+        <a href="https://moodfaces.heytcm.com/play">Themes</a>
+        <a href="https://moodfaces.heytcm.com/leaderboard">Leaderboard</a>
+        
+        <!-- Add divider -->
+        <div style="height: 1px; background: #444; margin: 20px 0;"></div>
+        
+        <!-- Add footer content -->
+        <div class="menu-footer">
+            <div class="menu-section">
+                <h3 style="color: #00ff9d; margin: 15px 25px;">About MoodFaces</h3>
+                <p style="color: #ccc; padding: 0 25px; margin-bottom: 15px; font-size: 0.9em;">Express yourself through our diverse collection of mood faces. From classic emojis to trending memes.</p>
+            </div>
+
+            <div class="menu-section">
+                <h3 style="color: #00ff9d; margin: 15px 25px;">Resources</h3>
+                <a href="https://moodfaces.heytcm.com/faq">FAQ</a>
+                <a href="https://moodfaces.heytcm.com/guidelines">Community Guidelines</a>
+                <a href="https://moodfaces.heytcm.com/privacy">Privacy Policy</a>
+                <a href="https://moodfaces.heytcm.com/terms">Terms of Service</a>
+            </div>
+
+            <div class="menu-section">
+                <h3 style="color: #00ff9d; margin: 15px 25px;">Contact</h3>
+                <p style="color: #ccc; padding: 0 25px; margin-bottom: 5px;">
+                    <svg style="width: 16px; height: 16px; margin-right: 10px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    support@moodfaces.heytcm.com
+                </p>
+            </div>
+
+            <!-- Social Links -->
+            <div style="padding: 20px 25px; border-top: 1px solid #444; margin-top: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <a href="https://twitter.com/moodfaces" style="color: #ccc; text-decoration: none; margin-right: 20px;">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com/moodfaces" style="color: #ccc; text-decoration: none; margin-right: 20px;">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://discord.gg/moodfaces" style="color: #ccc; text-decoration: none;">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </a>
+                </div>
+                <p style="color: #888; font-size: 0.8em; margin: 0;">© 2024 MoodFaces. All rights reserved.</p>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-container">
+        <!-- Games Header -->
+        <div class="games-header">
+            <h1>Explore Mood Themes</h1>
+            <p>Find the perfect way to express your emotions through our diverse collection of themes</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-options">
+                <button class="filter-button active">All Themes</button>
+                <button class="filter-button">Classic Emoji</button>
+                <button class="filter-button">Memes</button>
+                <button class="filter-button">Artistic</button>
+                <button class="filter-button">Trending</button>
+                <select class="sort-select">
+                    <option value="popular">Most Popular</option>
+                    <option value="recent">Recently Added</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="games-container">
+            <div class="games-grid" id="gamesGrid">
+                <!-- Games will be populated here via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Menu Toggle Functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navContainer = document.querySelector('.nav-container');
+        const overlay = document.querySelector('.overlay');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navContainer.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navContainer.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // New script for games page
+        const games = [
+            {
+                id: 1,
+                title: "2024 Tech Moods",
+                description: "Express anxiety, hope, and humor in response to AI and tech changes",
+                preview: ["😅", "🤖", "😨", "🤔", "😤", "😎"],
+                gridSize: "10×10",
+                plays: "12k",
+                rating: "95%",
+                category: "trending",
+                tags: ["Tech", "AI", "Modern"]
+            },
+            {
+                id: 2,
+                title: "Top Reddit Reactions",
+                description: "Most used reactions from Reddit communities",
+                preview: ["😂", "😭", "🥺", "😔", "😆", "🤣"],
+                gridSize: "9×9",
+                plays: "8.5k",
+                rating: "92%",
+                category: "memes",
+                tags: ["Social", "Popular", "Community"]
+            },
+            // Add more games here...
+        ];
+
+        function createGameCard(game) {
+            return `
+                <div class="game-card" onclick="window.location.href='https://moodfaces.heytcm.com/game/${game.id}'">
+                    <div class="game-preview">
+                        <div class="preview-grid">
+                            ${game.preview.slice(0, 6).map(emoji => `<div>${emoji}</div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="game-details">
+                        <div class="game-title">
+                            <span>${game.title}</span>
+                            ${game.category === 'trending' ? '<span class="trend-tag">Trending</span>' : ''}
+                        </div>
+                        <p>${game.description}</p>
+                        <div class="game-stats">
+                            <span class="game-stat">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                    <line x1="4" y1="22" x2="4" y2="15"></line>
+                                </svg>
+                                ${game.plays} plays
+                            </span>
+                            <span class="game-stat">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                ${game.rating}
+                            </span>
+                            <span class="game-stat">${game.gridSize}</span>
+                        </div>
+                        <div class="theme-tags">
+                            ${game.tags.map(tag => `<span class="theme-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function populateGames() {
+            const gamesGrid = document.getElementById('gamesGrid');
+            gamesGrid.innerHTML = games.map(game => createGameCard(game)).join('');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGames();
+
+            // Add filter functionality
+            const filterButtons = document.querySelectorAll('.filter-button');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    // Add filter logic here
+                });
+            });
+
+            // Add sort functionality
+            const sortSelect = document.querySelector('.sort-select');
+            sortSelect.addEventListener('change', () => {
+                // Add sort logic here
+            });
+        });
+    </script>
+</body>
+</html>

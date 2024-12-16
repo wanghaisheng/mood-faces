@@ -1,0 +1,22 @@
+{
+  "name": "mood weather-mood tracker app",
+  "short_name": "mood weather mood tracker",
+  "description" :"Track your emotional well-being with moodfaces - an innovative mood tracking app using weather metaphors. Get personalized insights, analytics, and support for better mental health.",
+  
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

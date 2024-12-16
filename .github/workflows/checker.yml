@@ -1,15 +1,15 @@
 name:  google-search-console-checker  
 
 on:
-  push:
-    branches:
-      - main   # Trigger on push to the main branch
+  # push:
+    # branches:
+      # - main   # Trigger on push to the main branch
   workflow_dispatch:  # Allow manual trigger with inputs
     inputs:
       website_url:
-        description: 'Website URL to check (e.g., https://feelingchart.heytcm.com)'
+        description: 'Website URL to check (e.g., https://moodfaces.heytcm.com)'
         required: true
-        default: 'https://feelingchart.heytcm.com'  # Default URL in case it's not provided
+        default: 'https://moodfaces.heytcm.com'  # Default URL in case it's not provided
 
 jobs:
   seo-check:
@@ -39,7 +39,7 @@ jobs:
 
       # Step 5: Upload SEO Check Results as an Artifact
       - name: Upload SEO check results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: seo-check-results
           path: ./seo-checker-report.txt  # Assuming the tool outputs results to a text file

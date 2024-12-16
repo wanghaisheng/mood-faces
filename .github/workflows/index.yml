@@ -20,7 +20,7 @@ jobs:
     - name: indexnow-action
       uses: bojieyang/indexnow-action@v2
       with:
-        sitemap-location: "https://feelingchart.heytcm.com/sitemap.xml"
+        sitemap-location: "https://moodfaces.heytcm.com/sitemap.xml"
         since: 1
         since-unit: "day"
         key: ${{ env.INDEXNOW_KEY }}

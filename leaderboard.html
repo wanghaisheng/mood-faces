@@ -45,7 +45,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('https://moodfaces.heytcm.com/sw.js')
+                navigator.serviceWorker.register('https://moodfaces.heytcm.com/service-worker.js')
                     .then(registration => {
                         console.log('ServiceWorker registration successful');
                     })

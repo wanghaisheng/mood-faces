@@ -1,9 +1,9 @@
 name: SEO Checker
 
 on:
-  push:
-    branches:
-      - main   # Trigger action on push to the main branch (you can adjust as needed)
+  # push:
+    # branches:
+      # - main   # Trigger action on push to the main branch (you can adjust as needed)
   workflow_dispatch:  # Allows manual trigger
 jobs:
   seo-check:
@@ -31,7 +31,7 @@ jobs:
           
       # Step 5: Upload SEO Check Results as Artifacts (Optional)
       - name: Upload SEO Check Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: seo-check-results
           path: ./seo-check-results.txt

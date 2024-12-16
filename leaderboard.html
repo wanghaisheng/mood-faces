@@ -1,0 +1,789 @@
+
+<html><head><base href="https://moodfaces.heytcm.com/leaderboard">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MoodFaces Leaderboard - Track and compare your performance in mood recognition and expression with players worldwide.">
+    <meta name="keywords" content="moodfaces, leaderboard, mood recognition, emotions, game, social">
+    <meta name="author" content="MoodFaces">
+    <meta http-equiv="Content-Language" content="en">
+    <link rel="canonical" href="https://moodfaces.heytcm.com/leaderboard" />
+    <meta property="og:title" content="MoodFaces - Global Leaderboard">
+    <meta property="og:description" content="Track and compare your performance in mood recognition and expression with players worldwide.">
+    <meta property="og:image" content="https://moodfaces.heytcm.com/og-image.jpg">
+    <meta property="og:url" content="https://moodfaces.heytcm.com/leaderboard">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MoodFaces - Global Leaderboard">
+    <meta name="twitter:description" content="Track and compare your performance in mood recognition and expression with players worldwide.">
+    <meta name="twitter:image" content="https://moodfaces.heytcm.com/og-image.jpg">
+    <meta name="twitter:creator" content="@moodfaces">
+    <link rel="icon" href="https://moodfaces.heytcm.com/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://moodfaces.heytcm.com/icon-192x192.png">
+    <meta name="theme-color" content="#00b8ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MoodFaces">
+    <link rel="manifest" href="https://moodfaces.heytcm.com/manifest.json">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXX-Y');
+    </script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement('script');t.async=1;t.src=r;
+            y=l.getElementsByTagName('script')[0];
+            y.parentNode.insertBefore(t,y);
+        })(window, document,'clarity','https://www.clarity.ms/tag/XXXXXX');
+    </script>
+    <title>MoodFaces - Leaderboard</title>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('https://moodfaces.heytcm.com/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+        }
+
+        .mobile-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background-color: #fff;
+            position: relative;
+        }
+
+        /* Navigation Styles - Same as play page */
+        .menu-toggle {
+            display: block;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger::before {
+            transform: translateY(-10px);
+        }
+
+        .hamburger::after {
+            transform: translateY(10px);
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100vh;
+            background-color: #333;
+            padding: 60px 0 0 0;
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .nav-container.active {
+            left: 0;
+        }
+
+        .nav-container a {
+            display: block;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-container a:hover {
+            background-color: #444;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Leaderboard Specific Styles */
+        .leaderboard-header {
+            background: linear-gradient(135deg, #00b8ff, #00ff9d);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .leaderboard-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard-description {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            overflow-x: auto;
+            border-bottom: 1px solid #eee;
+        }
+
+        .time-button {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .time-button.active {
+            background: linear-gradient(135deg, #00b8ff, #00ff9d);
+            color: white;
+            border-color: transparent;
+        }
+
+        .advanced-filters {
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+            padding-right: 30px;
+        }
+
+        .filter-select:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .filter-select:focus {
+            border-color: #00b8ff;
+            box-shadow: 0 0 0 2px rgba(0,184,255,0.1);
+        }
+
+        @media (max-width: 600px) {
+            .filter-group {
+                flex-wrap: wrap;
+            }
+            
+            .filter-select {
+                flex: 1 1 calc(50% - 5px);
+                min-width: 140px;
+            }
+        }
+
+        .leaderboard-container {
+            padding: 20px;
+        }
+
+        .leaderboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .leaderboard-card:hover {
+            transform: translateX(5px);
+        }
+
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #888;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .top-rank {
+            font-size: 2em;
+        }
+
+        .rank-1 { color: gold; }
+        .rank-2 { color: silver; }
+        .rank-3 { color: #cd7f32; }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .user-info {
+            flex-grow: 1;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #00b8ff;
+            font-size: 1.2em;
+        }
+
+        .achievement-badges {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: white;
+        }
+
+        .streak-badge { background: linear-gradient(135deg, #FF6B6B, #FF8E53); }
+        .accuracy-badge { background: linear-gradient(135deg, #4ECDC4, #45B7AF); }
+        .speed-badge { background: linear-gradient(135deg, #A06BFF, #843CF6); }
+
+        .loading-spinner {
+            display: none;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00b8ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Menu Footer Styles */
+        .menu-footer {
+            padding: 20px 25px;
+            border-top: 1px solid #444;
+            margin-top: 20px;
+            color: white;
+        }
+
+        .menu-section {
+            margin-bottom: 20px;
+        }
+
+        .menu-section h3 {
+            color: #00ff9d;
+            margin-bottom: 10px;
+        }
+
+        .menu-section p {
+            color: #ccc;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .menu-section a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .menu-section a:hover {
+            color: #00ff9d;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            padding: 0;
+        }
+
+        .social-links svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Add to existing CSS */
+        .theme-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="menu-toggle">
+        <div class="hamburger"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <a href="https://moodfaces.heytcm.com/home">Home</a>
+        <a href="https://moodfaces.heytcm.com/play">Themes</a>
+        <a href="https://moodfaces.heytcm.com/leaderboard">Leaderboard</a>
+        
+        <!-- Menu Footer -->
+        <div class="menu-footer">
+            <div class="menu-section">
+                <h3>About MoodFaces</h3>
+                <p>Express yourself through our diverse collection of mood faces. From classic emojis to trending memes.</p>
+            </div>
+
+            <div class="menu-section">
+                <h3>Resources</h3>
+                <a href="https://moodfaces.heytcm.com/faq">FAQ</a>
+                <a href="https://moodfaces.heytcm.com/guidelines">Community Guidelines</a>
+                <a href="https://moodfaces.heytcm.com/privacy">Privacy Policy</a>
+                <a href="https://moodfaces.heytcm.com/terms">Terms of Service</a>
+            </div>
+
+            <div class="menu-section">
+                <h3>Contact</h3>
+                <p>support@moodfaces.heytcm.com</p>
+            </div>
+
+            <div class="social-links">
+                <a href="https://twitter.com/moodfaces">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                    </svg>
+                </a>
+                <a href="https://instagram.com/moodfaces">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="https://discord.gg/moodfaces">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <p style="color: #888; font-size: 0.8em; margin-top: 20px;">© 2024 MoodFaces. All rights reserved.</p>
+        </div>
+    </nav>
+
+    <div class="mobile-container">
+        <!-- Leaderboard Header -->
+        <div class="leaderboard-header">
+            <h1 class="leaderboard-title">Global Leaderboard</h1>
+            <p class="leaderboard-description">Top performers in mood recognition and expression</p>
+        </div>
+
+        <!-- Time Filter -->
+        <div class="time-filter">
+            <button class="time-button active" data-period="all">All Time</button>
+            <button class="time-button" data-period="month">This Month</button>
+            <button class="time-button" data-period="week">This Week</button>
+            <button class="time-button" data-period="day">Today</button>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="advanced-filters">
+            <div class="filter-group">
+                <select class="filter-select" id="themeFilter">
+                    <option value="">All Themes</option>
+                </select>
+                
+                <select class="filter-select" id="countryFilter">
+                    <option value="">All Countries</option>
+                </select>
+                
+                <select class="filter-select" id="stateFilter" disabled>
+                    <option value="">All States</option>
+                </select>
+                
+                <select class="filter-select" id="cityFilter" disabled>
+                    <option value="">All Cities</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Leaderboard Container -->
+        <div class="leaderboard-container" id="leaderboardContainer">
+            <!-- Leaderboard entries will be dynamically populated here -->
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentPeriod = 'all'; // Default to 'all time'
+
+        // Menu Toggle Functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navContainer = document.querySelector('.nav-container');
+        const overlay = document.querySelector('.overlay');
+
+        menuToggle.addEventListener('click', () => {
+            const isActive = navContainer.classList.contains('active');
+            
+            // Toggle the active class for the menu button
+            menuToggle.classList.toggle('active');
+            
+            // Toggle the navigation container
+            navContainer.classList.toggle('active');
+            
+            // Toggle the overlay
+            overlay.classList.toggle('active');
+            
+            // Toggle body scroll
+            document.body.style.overflow = isActive ? '' : 'hidden';
+        });
+
+        overlay.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navContainer.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Add event listener to close menu when clicking a navigation link
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navContainer.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Add event listeners for time period buttons
+        const timeButtons = document.querySelectorAll('.time-button');
+        timeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Remove active class from all buttons
+                timeButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                e.target.classList.add('active');
+                // Update current period
+                currentPeriod = e.target.dataset.period;
+                // Reapply filters with new period
+                applyFilters();
+            });
+        });
+
+        async function fetchLeaderboardData(filters = {}) {
+            try {
+                const response = await fetch('/counts');
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error('Failed to fetch leaderboard data');
+                }
+
+                const entries = [];
+                
+                // Process the data to show theme and item popularity
+                Object.entries(data.counts).forEach(([themeId, items]) => {
+                    let themeTotal = 0;
+                    const itemStats = [];
+                    
+                    // Calculate stats for each item in the theme
+                    Object.entries(items).forEach(([itemId, countries]) => {
+                        let itemTotal = 0;
+                        
+                        // Sum up all counts for this item across locations
+                        Object.values(countries).forEach(regions => {
+                            Object.values(regions).forEach(cities => {
+                                Object.values(cities).forEach(count => {
+                                    itemTotal += count;
+                                });
+                            });
+                        });
+                        
+                        themeTotal += itemTotal;
+                        itemStats.push({
+                            themeId,
+                            itemId: parseInt(itemId),
+                            count: itemTotal
+                        });
+                    });
+                    
+                    // Add theme total
+                    entries.push({
+                        type: 'theme',
+                        themeId,
+                        count: themeTotal
+                    });
+                    
+                    // Add individual items
+                    entries.push(...itemStats.map(stat => ({
+                        type: 'item',
+                        ...stat
+                    })));
+                });
+
+                // Sort entries by count
+                return entries
+                    .sort((a, b) => b.count - a.count)
+                    .map((entry, index) => ({
+                        ...entry,
+                        rank: index + 1
+                    }));
+
+            } catch (error) {
+                console.error('Error fetching leaderboard data:', error);
+                return [];
+            }
+        }
+
+        async function populateLocationFilters() {
+            try {
+                const response = await fetch('/counts');
+                const data = await response.json();
+                
+                if (!data.success) return;
+
+                const locations = {};
+                
+                Object.values(data.counts).forEach(values => {
+                    Object.values(values).forEach(countries => {
+                        Object.entries(countries).forEach(([country, regions]) => {
+                            if (!locations[country]) {
+                                locations[country] = {};
+                            }
+                            
+                            Object.entries(regions).forEach(([region, cities]) => {
+                                if (!locations[country][region]) {
+                                    locations[country][region] = new Set();
+                                }
+                                
+                                Object.keys(cities).forEach(city => {
+                                    locations[country][region].add(city);
+                                });
+                            });
+                        });
+                    });
+                });
+
+                countryFilter.innerHTML = '<option value="">All Countries</option>';
+                Object.keys(locations).sort().forEach(country => {
+                    const option = new Option(country, country);
+                    countryFilter.add(option);
+                });
+
+                return locations;
+            } catch (error) {
+                console.error('Error populating location filters:', error);
+                return {};
+            }
+        }
+
+        async function populateThemeFilters() {
+            try {
+                const response = await fetch('/counts');
+                const data = await response.json();
+                
+                if (!data.success) return;
+
+                const themes = new Set(Object.keys(data.counts));
+                
+                themeFilter.innerHTML = '<option value="">All Themes</option>';
+                Array.from(themes).sort().forEach(theme => {
+                    const option = new Option(`Theme ${theme}`, theme);
+                    themeFilter.add(option);
+                });
+            } catch (error) {
+                console.error('Error populating theme filters:', error);
+            }
+        }
+
+        async function applyFilters() {
+            const filters = {
+                theme: themeFilter.value,
+                country: countryFilter.value,
+                state: stateFilter.value,
+                city: cityFilter.value,
+                period: currentPeriod
+            };
+
+            leaderboardContainer.style.opacity = '0.5';
+            loadingSpinner.style.display = 'flex';
+
+            try {
+                const data = await fetchLeaderboardData(filters);
+                leaderboardContainer.innerHTML = data.map(createLeaderboardEntry).join('');
+            } finally {
+                leaderboardContainer.style.opacity = '1';
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Promise.all([
+                populateLocationFilters(),
+                populateThemeFilters()
+            ]);
+
+            await applyFilters();
+
+            themeFilter.addEventListener('change', applyFilters);
+            countryFilter.addEventListener('change', applyFilters);
+            stateFilter.addEventListener('change', applyFilters);
+            cityFilter.addEventListener('change', applyFilters);
+        });
+
+        function createLeaderboardEntry(entry) {
+            const isTopThree = entry.rank <= 3;
+            const isTheme = entry.type === 'theme';
+            
+            return `
+                <div class="leaderboard-card">
+                    <div class="rank ${isTopThree ? 'top-rank rank-' + entry.rank : ''}">#${entry.rank}</div>
+                    <div class="theme-icon">
+                        ${isTheme ? '📁' : '😊'}
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">
+                            ${isTheme 
+                                ? `Theme ${entry.themeId}`
+                                : `Item ${entry.itemId} (Theme ${entry.themeId})`
+                            }
+                        </div>
+                        <div class="user-stats">
+                            <div class="stat">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 20V10"></path>
+                                    <path d="M18 20V4"></path>
+                                    <path d="M6 20V16"></path>
+                                </svg>
+                                ${entry.count.toLocaleString()} uses
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score">${(entry.count/1000).toFixed(1)}k</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
